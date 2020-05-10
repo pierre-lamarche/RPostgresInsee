@@ -6,8 +6,7 @@ Authors@R: person("Pierre", "Lamarche", email = "pierre.lamarche@insee.fr",
                   role = c("aut", "cre"))
 Description: Le package permet de se connecter à un serveur Postgres et visualiser la structure de la base de données sans passer par le package odbc.
     Seul le package RPostgres est utile.
-Depends: DBI
-Imports: methods, RPostgres
+Imports: DBI, methods, RPostgres, rstudioapi
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.1.0
