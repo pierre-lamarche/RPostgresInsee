@@ -10,6 +10,7 @@
   port = NULL,
   dbname = NULL,
   user = system("whoami", intern = TRUE),
+  password = rstudioapi::askForPassword("Mot de passe Windows :"),
   ...
 )
 }
@@ -23,6 +24,8 @@
 \item{dbname}{Le nom de la base de données}
 
 \item{user}{Par défaut, l'Idep de l'utilisateur}
+
+\item{password}{Le mot de passe de session Windows de l'utilisateur}
 
 \item{...}{D'autres paramètres concernant la base de données sur laquelle se connecter. Consulter la documentation sur [DBI::dbConnect()]}
 }

@@ -28,17 +28,19 @@ Postgres <- function() {
 #' @param port Le port pour se connecter au serveur Postgres
 #' @param dbname Le nom de la base de données
 #' @param user Par défaut, l'Idep de l'utilisateur
+#' @param password Le mot de passe de session Windows de l'utilisateur
 #' @param ... D'autres paramètres concernant la base de données sur laquelle se connecter. Consulter la documentation sur [DBI::dbConnect()]
 #' @return Un objet de la classe `PgInseeConnection` permettant de communiquer avec les bases de données Postgres à l'Insee.
 #' @inherit RPostgres::dbConnect
 #' @export
 setMethod("dbConnect", "PgInseeDriver", function(drv, host = NULL, port = NULL, dbname = NULL,
-                                            user = system("whoami", intern = TRUE), ...) {
+                                            user = system("whoami", intern = TRUE),
+                                            password = rstudioapi::askForPassword("Mot de passe Windows :"), ...) {
   # on s'arrête immédiatement si le driver n'est pas du type attendu
   stopifnot(inherits(drv, "PqDriver"))
 
   connexion <- callNextMethod(drv, host = host, port = port, dbname = dbname,
-                              user = user,
+                              user = user, password = password,
                               ...)
 
   # Notification au panneau de connexion de RStudio
