@@ -4,10 +4,17 @@
 \alias{dbConnect,PgInseeDriver-method}
 \title{Connexion au serveur Postgres}
 \usage{
-\S4method{dbConnect}{PgInseeDriver}(drv, host, port, dbname, user, ...)
+\S4method{dbConnect}{PgInseeDriver}(
+  drv,
+  host = NULL,
+  port = NULL,
+  dbname = NULL,
+  user = system("whoami", intern = TRUE),
+  ...
+)
 }
 \arguments{
-\item{drv}{Un objet de type driver \code{RPostgres PqDriver}}
+\item{drv}{Un objet de type driver \code{RPostgres PqDriver} - par défaut \code{RPostgres::Postgres()}}
 
 \item{host}{L'URL du serveur Postgres}
 

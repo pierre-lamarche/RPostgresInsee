@@ -10,13 +10,20 @@ setClass("PgInseeConnection", contains = c("PqConnection", "DBIConnection"))
 #' @importClassesFrom RPostgres PqDriver
 setClass("PgInseeDriver", contains = c("PqDriver", "DBIDriver"))
 
+#' Postgres driver
+#'
+#' @export
+Postgres <- function() {
+  new("PgInseeDriver")
+}
+
 #' Connexion au serveur Postgres
 #'
 #' Se connecter au serveur Postgres, en visualisant la structure de la base de données dans l'onglet Connections de RStudio
 #'
 #' Cette méthode surcharge le comportement de la méthode parente de la classe \code{PqConnection}
 #'
-#' @param drv Un objet de type driver \code{RPostgres PqDriver}
+#' @param drv Un objet de type driver \code{RPostgres PqDriver} - par défaut \code{RPostgres::Postgres()}
 #' @param host L'URL du serveur Postgres
 #' @param port Le port pour se connecter au serveur Postgres
 #' @param dbname Le nom de la base de données
@@ -25,13 +32,13 @@ setClass("PgInseeDriver", contains = c("PqDriver", "DBIDriver"))
 #' @return Un objet de la classe `PgInseeConnection` permettant de communiquer avec les bases de données Postgres à l'Insee.
 #' @inherit RPostgres::dbConnect
 #' @export
-setMethod("dbConnect", "PgInseeDriver", function(drv, host, port, dbname, user, ...) {
+setMethod("dbConnect", "PgInseeDriver", function(drv, host = NULL, port = NULL, dbname = NULL,
+                                            user = system("whoami", intern = TRUE), ...) {
   # on s'arrête immédiatement si le driver n'est pas du type attendu
   stopifnot(inherits(drv, "PqDriver"))
 
   connexion <- callNextMethod(drv, host = host, port = port, dbname = dbname,
-                              user = system("whoami", intern = TRUE),
-                              password = rstudioapi::askForPassword("Entrez votre mot de passe Windows :"),
+                              user = user,
                               ...)
 
   # Notification au panneau de connexion de RStudio
@@ -45,7 +52,7 @@ setMethod("dbConnect", "PgInseeDriver", function(drv, host, port, dbname, user, 
       tryCatch({
         if (is.call(expr) &&
             as.character(expr[[1]]) %in% c("<-", "=") &&
-            "connectPostgreSDSE" %in% as.character(expr[[3]][[1]])) {
+            "connectPostgreInsee" %in% as.character(expr[[3]][[1]])) {
           # notify if this is an assignment we can replay
           on_connection_opened(
             connection = eval(expr[[2]]),
