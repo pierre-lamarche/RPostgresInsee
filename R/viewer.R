@@ -12,15 +12,13 @@ on_connection_updated <- function(connection, hint) {
   if (is.null(observer))
     return(invisible(NULL))
 
-
   observer$connectionUpdated(
-    type = "Postgre",
+    type = "Postgres",
     host = DBI::dbGetInfo(connection)$dbname,
     hint = hint)
 }
 
 on_connection_opened <- function(connection, code) {
-
 
   # make sure we have an observer
   observer <- getOption("connectionObserver")
@@ -31,16 +29,16 @@ on_connection_opened <- function(connection, code) {
   observer$connectionOpened(
 
     # connection type
-    type = "Postgre",
+    type = "Postgres",
 
     # name displayed in connection pane
-    displayName = paste("PostgreSQL SDSE // db :", DBI::dbGetInfo(connection)$dbname),
+    displayName = paste("PostgreSQL Insee // db :", DBI::dbGetInfo(connection)$dbname),
 
     # host key
     host = DBI::dbGetInfo(connection)$dbname,
 
     # icon for connection
-    icon = (system.file("img", "ssp16x16.png", package = "pgsdse")),
+    icon = (system.file("img", "ssp16x16.png", package = "RPostgresInsee")),
 
     # connection code
     connectCode = code,
@@ -78,15 +76,13 @@ on_connection_opened <- function(connection, code) {
   )
 }
 
-
-
 on_connection_closed <- function(connection) {
   # make sure we have an observer
   observer <- getOption("connectionObserver")
   if (is.null(observer))
     return(invisible(NULL))
 
-  type <- "Postgre"
+  type <- "Postgres"
   host <- DBI::dbGetInfo(connection)$dbname
   observer$connectionClosed(type, host)
 }
@@ -144,7 +140,7 @@ pgInseeListCatalogs <- function(connection, ...) {
 pgInseeListSchemas <- function(connection, catalog, ...) {
   query <- "select nspname as name from pg_catalog.pg_namespace
             where nspacl is not null
-            and nspname not in ('public', 'pg_catalog', 'information_schema')
+            and nspname not in ('pg_catalog', 'information_schema')
             order by name"
   obj <- DBI::dbGetQuery(connection, query)
   obj$type <- "schema"
@@ -192,6 +188,7 @@ pgInseeConnectionActions <- function(connection) {
     Help = list(
       icon = "",
       callback = function() {
+        utils::browseURL("https://github.com/rstats-db/odbc/blob/master/README.md")
       }
     )
   )
