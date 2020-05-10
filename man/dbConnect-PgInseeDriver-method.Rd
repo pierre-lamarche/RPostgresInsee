@@ -4,12 +4,20 @@
 \alias{dbConnect,PgInseeDriver-method}
 \title{Connexion au serveur Postgres}
 \usage{
-\S4method{dbConnect}{PgInseeDriver}(drv, ...)
+\S4method{dbConnect}{PgInseeDriver}(drv, host, port, dbname, user, ...)
 }
 \arguments{
 \item{drv}{Un objet de type driver \code{RPostgres PqDriver}}
 
-\item{...}{d'autres paramètres concernant la base de données sur laquelle se connecter. Consulter la documentation sur [DBI::dbConnect()]}
+\item{host}{L'URL du serveur Postgres}
+
+\item{port}{Le port pour se connecter au serveur Postgres}
+
+\item{dbname}{Le nom de la base de données}
+
+\item{user}{Par défaut, l'Idep de l'utilisateur}
+
+\item{...}{D'autres paramètres concernant la base de données sur laquelle se connecter. Consulter la documentation sur [DBI::dbConnect()]}
 }
 \value{
 Un objet de la classe `PgInseeConnection` permettant de communiquer avec les bases de données Postgres à l'Insee.
