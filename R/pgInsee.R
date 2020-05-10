@@ -34,8 +34,8 @@ Postgres <- function() {
 #' @inherit RPostgres::dbConnect
 #' @export
 setMethod("dbConnect", "PgInseeDriver", function(drv, host = NULL, port = NULL, dbname = NULL,
-                                            user = system("whoami", intern = TRUE),
-                                            password = rstudioapi::askForPassword("Mot de passe Windows :"), ...) {
+                                                 user = system("whoami", intern = TRUE),
+                                                 password = rstudioapi::askForPassword("Mot de passe Windows :"), ...) {
   # on s'arrête immédiatement si le driver n'est pas du type attendu
   stopifnot(inherits(drv, "PqDriver"))
 
@@ -54,7 +54,7 @@ setMethod("dbConnect", "PgInseeDriver", function(drv, host = NULL, port = NULL, 
       tryCatch({
         if (is.call(expr) &&
             as.character(expr[[1]]) %in% c("<-", "=") &&
-            "connectPostgreInsee" %in% as.character(expr[[3]][[1]])) {
+            "dbConnect" %in% as.character(expr[[3]][[1]])) {
           # notify if this is an assignment we can replay
           on_connection_opened(
             connection = eval(expr[[2]]),
